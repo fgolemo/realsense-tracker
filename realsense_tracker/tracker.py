@@ -1,5 +1,8 @@
 import cv2
 import numpy as np
+from realsense_tracker.camera import Camera
+
+tnp = Camera.to_numpy
 
 def grab_contours(cnts):
     # if the length the contours tuple returned by cv2.findContours
@@ -59,4 +62,11 @@ class Tracker(object):
             return center, radius, x, y
 
         return None, None, None, None
+
+    def get_frame_and_track(self, cam):
+        frame = tnp(cam.get_color())[:, :, ::-1]  # RGB to BGR for cv2
+        mask = self.prep_image(frame)
+
+        # center of mass, radius of enclosing circle, x/y of enclosing circle
+        return self.track(mask)
 
