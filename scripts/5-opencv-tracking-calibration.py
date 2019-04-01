@@ -12,15 +12,18 @@ config.enable_stream(rs.stream.color, 640, 480, rs.format.rgb8, 60)
 
 # Start streaming
 profile = pipeline.start(config)
-s_rgb = profile.get_device().query_sensors()[0]
+s_rgb = profile.get_device().query_sensors()[1]
 # s_depth = profile.get_device().query_sensors()[1]
 
 for s in [s_rgb]:
     s.set_option(rs.option.exposure, 50)
     s.set_option(rs.option.enable_auto_exposure, 0)
 
-greenLower = (54, 70, 50)
-greenUpper = (71, 160, 220)
+# greenLower = (54, 70, 50)
+# greenUpper = (71, 160, 220)
+
+greenLower = (75, 34, 75)
+greenUpper = (95, 207, 216)
 
 pts = deque(maxlen=32) # keep last couple frames buffered
 

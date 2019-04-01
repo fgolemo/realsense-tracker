@@ -1,5 +1,6 @@
 import time
 
+import h5py
 import numpy as np
 import cv2
 
@@ -12,7 +13,10 @@ from realsense_tracker.utils import add_text
 cam = Camera(color=True)
 tnp = Camera.to_numpy
 
-tracker = Tracker((54, 68, 11), (92, 255, 224))
+greenLower = (75, 34, 75)
+greenUpper = (95, 207, 216)
+
+tracker = Tracker(greenLower, greenUpper)
 
 pts = deque(maxlen=32)  # keep last couple frames buffered
 
@@ -28,7 +32,7 @@ while True:
     # center of mass, radius of enclosing circle, x/y of enclosing circle
     center, radius, x, y = tracker.track(mask)
 
-    if center is not None and radius > 10:
+    if center is not None and radius > 6:
         # circle center
         cv2.circle(frame2, (int(x), int(y)), int(radius), (0, 255, 255), 2)
 
@@ -58,6 +62,15 @@ while True:
     add_text(frame2, "fps: {}Hz".format(fps_current))
 
     cv2.imshow("Frame", frame2)
+    # with h5py.File("test.hdf5", "w") as f:
+    #     f.create_dataset("testds", data=frame2.copy())
+    #
+    # with h5py.File("test.hdf5", "r") as f:
+    #     print (f.get("testds").shape)
+    #     frame3 = np.copy(f.get("testds"))
+    #
+    # cv2.imshow("Frame Disk", frame3)
+
     cv2.imshow("Thresh", mask)
 
     key = cv2.waitKey(1) & 0xFF

@@ -4,6 +4,11 @@ from realsense_tracker.camera import Camera
 
 tnp = Camera.to_numpy
 
+TRACKING_GREEN = {
+    "maxime_lower": (75, 34, 75),
+    "maxime_upper": (95, 207, 216),
+}
+
 def grab_contours(cnts):
     # if the length the contours tuple returned by cv2.findContours
     # is '2' then we are using either OpenCV v2.4, v4-beta, or
@@ -68,5 +73,5 @@ class Tracker(object):
         mask = self.prep_image(frame)
 
         # center of mass, radius of enclosing circle, x/y of enclosing circle
-        return self.track(mask)
+        return frame, self.track(mask)
 
