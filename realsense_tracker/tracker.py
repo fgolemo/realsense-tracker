@@ -5,9 +5,17 @@ from realsense_tracker.camera import Camera
 tnp = Camera.to_numpy
 
 TRACKING_GREEN = {
+    "duct_lower": (48, 45, 156),
+    "duct_upper": (77, 137, 220),
     "maxime_lower": (75, 34, 75),
     "maxime_upper": (95, 207, 216),
 }
+
+TRACKING_YELLOW = {
+    "duckie_lower": (9, 72, 180),
+    "duckie_upper": (25, 157, 255),
+}
+
 
 def grab_contours(cnts):
     # if the length the contours tuple returned by cv2.findContours
@@ -32,16 +40,19 @@ def grab_contours(cnts):
     # return the actual contours array
     return cnts
 
+
 class Tracker(object):
 
     def __init__(self, color_lower, color_upper):
         self.lower = color_lower
         self.upper = color_upper
 
-    def prep_image(self, frame):
+    def blur_img(self, frame):
         blurred = cv2.GaussianBlur(frame, (15, 15), 0)
         hsv = cv2.cvtColor(blurred, cv2.COLOR_BGR2HSV)
+        return hsv
 
+    def prep_image(self, hsv):
         mask = cv2.inRange(hsv, self.lower, self.upper)
         mask = cv2.erode(mask, None, iterations=2)
         mask = cv2.dilate(mask, None, iterations=2)
@@ -55,7 +66,6 @@ class Tracker(object):
 
         # only proceed if at least one contour was found
         if len(cnts) > 0:
-
             # find the largest contour in the mask, then use
             # it to compute the minimum enclosing circle and
             # centroid
@@ -70,8 +80,8 @@ class Tracker(object):
 
     def get_frame_and_track(self, cam):
         frame = tnp(cam.get_color())[:, :, ::-1]  # RGB to BGR for cv2
-        mask = self.prep_image(frame)
+        hsv = self.blur_img(frame)
+        mask = self.prep_image(hsv)
 
         # center of mass, radius of enclosing circle, x/y of enclosing circle
         return frame, self.track(mask)
-

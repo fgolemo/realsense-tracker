@@ -25,6 +25,12 @@ for s in [s_rgb]:
 greenLower = (75, 34, 75)
 greenUpper = (95, 207, 216)
 
+duckieLower = (9, 72, 180)
+duckieUpper = (25, 157, 255)
+
+redLower = (0,0,0)
+redUpper = (0,0,0)
+
 pts = deque(maxlen=32) # keep last couple frames buffered
 
 def noop(value):
