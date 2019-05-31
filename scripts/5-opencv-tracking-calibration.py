@@ -10,26 +10,36 @@ config = rs.config()
 # config.enable_stream(rs.stream.depth, 640, 480, rs.format.z16, 60)
 config.enable_stream(rs.stream.color, 640, 480, rs.format.rgb8, 60)
 
+
 # Start streaming
 profile = pipeline.start(config)
 s_rgb = profile.get_device().query_sensors()[1]
 # s_depth = profile.get_device().query_sensors()[1]
 
+print (s_rgb.get_info(rs.camera_info.name))
+
 for s in [s_rgb]:
     s.set_option(rs.option.exposure, 50)
     s.set_option(rs.option.enable_auto_exposure, 0)
+    s.set_option(rs.option.gain, 128)
+    s.set_option(rs.option.gamma, 470)
+    s.set_option(rs.option.saturation, 64)
+    s.set_option(rs.option.sharpness, 30)
+    s.set_option(rs.option.white_balance, 3200)
+    s.set_option(rs.option.enable_auto_white_balance, 0)
+    s.set_option(rs.option.backlight_compensation, 0)
 
 # greenLower = (54, 70, 50)
 # greenUpper = (71, 160, 220)
 
-greenLower = (75, 34, 75)
-greenUpper = (95, 207, 216)
-
-duckieLower = (9, 72, 180)
-duckieUpper = (25, 157, 255)
-
-redLower = (0,0,0)
-redUpper = (0,0,0)
+# greenLower = (75, 34, 75)
+# greenUpper = (95, 207, 216)
+#
+# duckieLower = (9, 72, 180)
+# duckieUpper = (25, 157, 255)
+#
+# redLower = (0,0,0)
+# redUpper = (0,0,0)
 
 pts = deque(maxlen=32) # keep last couple frames buffered
 

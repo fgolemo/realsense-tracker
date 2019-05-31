@@ -9,6 +9,8 @@ TRACKING_GREEN = {
     "duct_upper": (77, 137, 220),
     "maxime_lower": (75, 34, 75),
     "maxime_upper": (95, 207, 216),
+    "udem_lower": (30, 19, 67),
+    "udem_upper": (92, 190, 188)
 }
 
 TRACKING_YELLOW = {

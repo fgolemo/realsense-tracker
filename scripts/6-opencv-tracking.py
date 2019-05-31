@@ -7,14 +7,17 @@ import cv2
 from collections import deque
 
 from realsense_tracker.camera import Camera
-from realsense_tracker.tracker import Tracker
+from realsense_tracker.tracker import Tracker, TRACKING_GREEN
 from realsense_tracker.utils import add_text
 
 cam = Camera(color=True)
 tnp = Camera.to_numpy
 
-greenLower = (75, 34, 75)
-greenUpper = (95, 207, 216)
+# greenLower = (75, 34, 75)
+# greenUpper = (95, 207, 216)
+
+greenLower = (30, 19, 67)
+greenUpper = (92, 190, 188)
 
 tracker = Tracker(greenLower, greenUpper)
 
@@ -24,13 +27,10 @@ fps = deque(maxlen=100)
 
 while True:
     start = time.time()
-    frame = tnp(cam.get_color())[:, :, ::-1]  # RGB to BGR for cv2
-
-    mask = tracker.prep_image(frame)
-    frame2 = np.ascontiguousarray(frame, dtype=np.uint8)
 
     # center of mass, radius of enclosing circle, x/y of enclosing circle
-    center, radius, x, y = tracker.track(mask)
+    frame, (center, radius, x, y), mask = tracker.get_frame_and_track(cam)
+    frame2 = np.ascontiguousarray(frame, dtype=np.uint8)
 
     if center is not None and radius > 6:
         # circle center
