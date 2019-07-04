@@ -10,12 +10,19 @@ TRACKING_GREEN = {
     "maxime_lower": (75, 34, 75),
     "maxime_upper": (95, 207, 216),
     "udem_lower": (30, 19, 67),
-    "udem_upper": (92, 190, 188)
+    "udem_upper": (92, 190, 188),
+    "pusher_lower": (41, 21, 25),
+    "pusher_upper": (77, 146, 114)
 }
 
 TRACKING_YELLOW = {
     "duckie_lower": (9, 72, 180),
     "duckie_upper": (25, 157, 255),
+}
+
+TRACKING_RED = {
+    "pusher_low": (0, 154, 37),
+    "pusher_high": (6, 197, 165)
 }
 
 
@@ -86,4 +93,4 @@ class Tracker(object):
         mask = self.prep_image(hsv)
 
         # center of mass, radius of enclosing circle, x/y of enclosing circle
-        return frame, self.track(mask)
+        return frame, self.track(mask), mask

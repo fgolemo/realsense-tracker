@@ -16,8 +16,8 @@ tnp = Camera.to_numpy
 # greenLower = (75, 34, 75)
 # greenUpper = (95, 207, 216)
 
-greenLower = (30, 19, 67)
-greenUpper = (92, 190, 188)
+greenLower = (41, 21, 25)
+greenUpper = (77, 146, 114)
 
 tracker = Tracker(greenLower, greenUpper)
 
